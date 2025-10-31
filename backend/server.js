@@ -17,7 +17,7 @@ const io = new socketIo(server, {
   cors: {
     origin: [
       "http://localhost:5173",               // for local development
-      "https://codecollob.netlify.app",      // your Netlify frontend (update name if needed)
+      "https://code-collob.netlify.app",      // your Netlify frontend (update name if needed)
     ],
     methods: ["GET", "POST"],
     credentials: true,
@@ -30,7 +30,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://codecollob.netlify.app",
+      "https://code-collob.netlify.app",
     ],
     credentials: true,
   })
