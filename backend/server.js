@@ -13,19 +13,28 @@ const app = express();
 const server = http.createServer(app);
 
 // Configure CORS for Socket.IO
-const io = socketIo(server, {
+const io = new socketIo(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",               // for local development
+      "https://codecollob.netlify.app",      // your Netlify frontend (update name if needed)
+    ],
     methods: ["GET", "POST"],
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
-// Middleware
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+// ---------- EXPRESS MIDDLEWARE ----------
+app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://codecollob.netlify.app",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // In-memory storage for rooms
