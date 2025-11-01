@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io'); // ✅ FIXED import
+const socketIo = require('socket.io');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 const { spawn } = require('child_process');
@@ -12,29 +12,20 @@ const tmp = require('tmp');
 const app = express();
 const server = http.createServer(app);
 
-// ✅ Correct Socket.IO constructor
-const io = new Server(server, {
+// Configure CORS for Socket.IO
+const io = socketIo(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",                // local dev
-      "https://code-collob.netlify.app",      // ✅ Netlify frontend URL
-    ],
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
-    credentials: true,
-  },
+    credentials: true
+  }
 });
 
-// ---------- EXPRESS MIDDLEWARE ----------
-app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://code-collob.netlify.app",      // ✅ same here
-    ],
-    credentials: true,
-  })
-);
+// Middleware
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 app.use(express.json());
 
 // In-memory storage for rooms
@@ -118,6 +109,7 @@ app.post('/api/execute', (req, res) => {
     if (language === 'javascript') {
       child = spawn('node', ['-e', code]);
     } else if (language === 'python') {
+      // Use 'python' on Windows, 'python3' elsewhere
       const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
       child = spawn(pythonCmd, ['-c', code]);
     } else if (language === 'c') {
@@ -165,6 +157,7 @@ app.post('/api/execute', (req, res) => {
       compile.stderr.on('data', (data) => errorOutput += data.toString());
       return;
     } else if (language === 'java') {
+      // Write to Main.java, compile, then run
       const tmpDir = tmp.dirSync();
       const javaFile = path.join(tmpDir.name, 'Main.java');
       fs.writeFileSync(javaFile, code);
@@ -175,6 +168,7 @@ app.post('/api/execute', (req, res) => {
           sendResult('Compilation failed', compileCode);
           return;
         }
+        // Run: java -cp <dir> Main
         child = spawn('java', ['-cp', tmpDir.name, 'Main']);
         child.stdout.on('data', (data) => output += data.toString());
         child.stderr.on('data', (data) => errorOutput += data.toString());
@@ -363,7 +357,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3001;
 
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
