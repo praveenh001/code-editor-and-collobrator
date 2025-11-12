@@ -290,13 +290,13 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
           >
             <FolderPlus className="w-4 h-4" />
           </button>
-          <button
+          {/* <button
             onClick={onOpenFolder}
             className="p-1 hover:bg-gray-700 rounded transition-colors"
             title="Open local folder"
           >
             <FolderOpen className="w-4 h-4" />
-          </button>
+          </button> */}
         </div>
       </div>
 
