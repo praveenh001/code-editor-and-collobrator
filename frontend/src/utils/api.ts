@@ -1,4 +1,8 @@
-const API_BASE_URL = 'http://localhost:3001/api';
+// ⭐ Auto-switch between local and deployed backend
+const API_BASE_URL =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3001/api'
+    : 'https://codesync-bgac.onrender.com/api';
 
 export const api = {
   // Room operations

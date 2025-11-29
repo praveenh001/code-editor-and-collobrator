@@ -14,7 +14,10 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://codecollob-frontend.onrender.com"  // ⭐ Your Render frontend URL
+    ],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -22,9 +25,13 @@ const io = socketIo(server, {
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://codecollob-frontend.onrender.com"
+    ],
     credentials: true,
   })
+
 );
 app.use(express.json());
 

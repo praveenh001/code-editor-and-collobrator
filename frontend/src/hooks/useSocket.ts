@@ -7,7 +7,14 @@ interface UseSocketReturn {
   error: string | null;
 }
 
-const useSocket = (serverUrl: string = 'http://localhost:3001'): UseSocketReturn => {
+// ⭐ Only this change: automatic local/prod URL selection
+const getServerUrl = () => {
+  return window.location.hostname === 'localhost'
+    ? 'http://localhost:3001'
+    : 'https://codesync-bgac.onrender.com';
+};
+
+const useSocket = (serverUrl: string = getServerUrl()): UseSocketReturn => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +22,7 @@ const useSocket = (serverUrl: string = 'http://localhost:3001'): UseSocketReturn
   const connect = useCallback(() => {
     try {
       const newSocket = io(serverUrl, {
-        transports: ['websocket', 'polling'],
+        transports: ['websocket', 'polling'], // ⭐ Keep same
         timeout: 20000,
         autoConnect: true
       });
