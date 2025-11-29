@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  Plus, 
-  LogIn, 
-  Copy, 
-  Check, 
-  Code, 
-  Users, 
+import { api } from '../utils/api';   // adjust path if needed
+
+import {
+  Plus,
+  LogIn,
+  Copy,
+  Check,
+  Code,
+  Users,
   Zap,
   Home,
   Download,
@@ -38,23 +40,17 @@ const RoomManager: React.FC<RoomManagerProps> = ({
   };
 
   const handleCreateRoom = async () => {
-    if (userName.trim()) {
-      try {
-        const response = await fetch('http://localhost:3001/api/rooms/create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setNewRoomId(data.roomId);
-          setMode('create');
-        }
-      } catch (error) {
-        console.error('Failed to create room:', error);
-      }
+  if (userName.trim()) {
+    try {
+      const data = await api.createRoom();   // 👍 correct API call
+      setNewRoomId(data.roomId);
+      setMode('create');
+    } catch (error) {
+      console.error('Failed to create room:', error);
     }
-  };
+  }
+};
+
 
   const copyRoomId = () => {
     navigator.clipboard.writeText(newRoomId);
@@ -78,19 +74,19 @@ const RoomManager: React.FC<RoomManagerProps> = ({
             <div className="relative">
               {/* Main Code Brackets */}
               <Code className="w-8 h-8 text-white" />
-              
+
               {/* Collaborative Dots */}
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
-              <div className="absolute -top-1 -left-1 w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+              <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              <div className="absolute -top-1 -left-1 w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
             </div>
           </div>
-          
+
           {/* Connection Lines */}
           <div className="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-cyan-400/50 rounded-tr-lg"></div>
           <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-blue-400/50 rounded-bl-lg"></div>
         </div>
-        
+
         {/* Logo Text */}
         <div className="text-left">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -117,7 +113,7 @@ const RoomManager: React.FC<RoomManagerProps> = ({
             <Users className="w-2 h-2 text-white" />
           </div>
         </div>
-        
+
         <div className="text-left">
           <h1 className="text-xl font-bold text-white">CodeSync</h1>
           <p className="text-xs text-gray-400">Real-time Collaboration</p>
@@ -138,15 +134,15 @@ const RoomManager: React.FC<RoomManagerProps> = ({
     <div className="fixed inset-0 -z-10 overflow-hidden">
       {/* Base gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900"></div>
-      
+
       {/* Geometric Pattern Overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[length:40px_40px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent_70%)]"></div>
-      
+
       {/* Hexagon Grid Overlay */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0 bg-[linear-gradient(30deg,transparent_0%,transparent_75%,rgba(103,232,249,0.1)_75%,rgba(103,232,249,0.1)_100%),linear-gradient(150deg,transparent_0%,transparent_75%,rgba(59,130,246,0.1)_75%,rgba(59,130,246,0.1)_100%)] bg-[size:60px_60px]"></div>
       </div>
-      
+
       {/* Floating Particles */}
       <div className="absolute inset-0">
         {[...Array(20)].map((_, i) => (
@@ -162,33 +158,33 @@ const RoomManager: React.FC<RoomManagerProps> = ({
           />
         ))}
       </div>
-      
+
       {/* Animated Gradient Orbs */}
       <div className="absolute -top-40 -right-32 w-80 h-80 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-full blur-3xl animate-orb-float-1"></div>
       <div className="absolute -bottom-40 -left-32 w-80 h-80 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-orb-float-2"></div>
       <div className="absolute top-1/3 -left-20 w-60 h-60 bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full blur-3xl animate-orb-float-3"></div>
       <div className="absolute bottom-1/3 -right-20 w-60 h-60 bg-gradient-to-r from-green-500/15 to-cyan-500/15 rounded-full blur-3xl animate-orb-float-4"></div>
-      
+
       {/* Scan Lines Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.1)_50%)] bg-[size:100%_4px] opacity-30"></div>
-      
+
       {/* Vignette Effect */}
       <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_70%)"></div>
-      
+
       {/* Binary Code Animation */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(103,232,249,0.1)_50%,transparent_100%)] animate-scan"></div>
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent animate-scan-line"></div>
       </div>
-      
+
       {/* Glass Morphism Reflection */}
       <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/5 to-transparent opacity-20"></div>
-      
+
       {/* Circuit Board Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_24px,rgba(103,232,249,0.3)_24px,rgba(103,232,249,0.3)_25px,transparent_25px),linear-gradient(0deg,transparent_24px,rgba(59,130,246,0.3)_24px,rgba(59,130,246,0.3)_25px,transparent_25px)] bg-[size:50px_50px]"></div>
       </div>
-      
+
       {/* Holographic Grid */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,rgba(103,232,249,0.1)_0%,rgba(59,130,246,0.1)_25%,rgba(147,51,234,0.1)_50%,rgba(103,232,249,0.1)_75%,rgba(59,130,246,0.1)_100%)] [mask-image:radial-gradient(circle_at_center,transparent_20%,black_70%)]"></div>
@@ -324,7 +320,7 @@ const RoomManager: React.FC<RoomManagerProps> = ({
                       />
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-semibold text-gray-300 mb-3">
                       Room ID
