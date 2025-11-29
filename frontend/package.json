@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp _redirects dist/_redirects || true",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "backend": "cd backend && npm start",
