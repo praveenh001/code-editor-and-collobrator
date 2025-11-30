@@ -1,6 +1,6 @@
 {
-  "redirects": [
-    { "source": "/room/**", "destination": "/index.html", "type": 200 },
-    { "source": "/**", "destination": "/index.html", "type": 200 }
-  ]
+  "root": "dist",
+  "routes": {
+    "/**": "index.html"
+  }
 }
